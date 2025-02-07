@@ -1,5 +1,6 @@
 package com.bigbull.schedulingApp.handler;
 
+import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -32,15 +33,17 @@ public class GoogleCalDevHandler {
 
 
     @Value("${google.calendar.appName}")
-    private static String appName;
+    String appName;
 
     @Value("${max.results}")
-    private static int maxResults;
+    int maxResults;
     public Events getEvents() {
         try {
+            log.info(maxResults+" appName "+appName);
             DateTime now = new DateTime(System.currentTimeMillis());
             NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, calendarQuickstart.getCredentials(HTTP_TRANSPORT))
+            Credential credentials = calendarQuickstart.getCredentials(HTTP_TRANSPORT);
+            Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY,credentials)
                 .setApplicationName(appName)
                 .build();
             return service.events().list("primary")
