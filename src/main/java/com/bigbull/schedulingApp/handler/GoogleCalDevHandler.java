@@ -6,6 +6,8 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.CalendarList;
+import com.google.api.services.calendar.model.CalendarListEntry;
 import org.springframework.beans.factory.annotation.Value;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
@@ -37,7 +39,7 @@ public class GoogleCalDevHandler {
 
     @Value("${max.results}")
     int maxResults;
-    public Events getEvents() {
+    public  com.google.api.services.calendar.model.Calendar getEvents(String email) {
         try {
             log.info(maxResults+" appName "+appName);
             DateTime now = new DateTime(System.currentTimeMillis());
@@ -46,14 +48,11 @@ public class GoogleCalDevHandler {
             Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY,credentials)
                 .setApplicationName(appName)
                 .build();
-            return service.events().list("primary")
-                .setMaxResults(maxResults)
-                .setTimeMin(now)
-                .setOrderBy("startTime")
-                .setSingleEvents(true)
-                .execute();
+            com.google.api.services.calendar.model.Calendar calendar = service.calendars().get(email).execute();
+            return calendar;
         } catch (GeneralSecurityException | IOException e) {
-            throw new RuntimeException(e);
+            log.error("Error in getting events", e);
+            return null;
         }
     }
 }

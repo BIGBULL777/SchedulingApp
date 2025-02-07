@@ -19,7 +19,7 @@ public class BaseController {
     @GetMapping(value = "/get-events")
     public ResponseEntity getEvents(@RequestParam String email) {
         log.info("BaseController_getEvents Params {} ",email);
-        ResponseDto<Events> responseDto =  baseService.getEvents(email);
+        ResponseDto<com.google.api.services.calendar.model.Calendar> responseDto =  baseService.getEvents(email);
         return ResponseEntity.ok(responseDto);
     }
 }
