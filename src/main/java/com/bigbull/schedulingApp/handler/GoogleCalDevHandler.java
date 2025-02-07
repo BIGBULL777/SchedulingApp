@@ -33,33 +33,22 @@ public class GoogleCalDevHandler {
 
     @Value("${google.calendar.appName}")
     private static String appName;
-    public void getEvents() {
+
+    @Value("${max.results}")
+    private static int maxResults;
+    public Events getEvents() {
         try {
             DateTime now = new DateTime(System.currentTimeMillis());
             NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, calendarQuickstart.getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(appName)
                 .build();
-            Events events = service.events().list("primary")
-                .setMaxResults(10)
+            return service.events().list("primary")
+                .setMaxResults(maxResults)
                 .setTimeMin(now)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();
-            List<Event> items = events.getItems();
-            if (!items.isEmpty()) {
-                log.info("Upcoming Events");
-                for (Event event : items) {
-                    DateTime start = event.getStart().getDateTime();
-                    if (start == null) {
-                        start = event.getStart().getDate();
-                    }
-                    log.info("{} ({})\n", event.getSummary(), start);
-                }
-            }
-            else {
-                log.error("No upcoming events found.");
-            }
         } catch (GeneralSecurityException | IOException e) {
             throw new RuntimeException(e);
         }
