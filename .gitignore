@@ -28,7 +28,6 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-Creds.json
-
+src/main/resources/
 ### VS Code ###
 .vscode/
