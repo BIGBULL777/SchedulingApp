@@ -31,8 +31,6 @@ public class GoogleCalDevHandler {
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
 
-
-
     @Value("${google.calendar.appName}")
     private static String appName;
     public void getEvents() {
