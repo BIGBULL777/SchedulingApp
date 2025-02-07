@@ -30,7 +30,7 @@ import java.util.List;
 /* class to demonstrate use of Calendar events list API */
 @Component
 @Slf4j
-public class CalendarQuickstart {
+public class GetCalendarCreds {
 
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
@@ -38,13 +38,6 @@ public class CalendarQuickstart {
      * Directory to store authorization tokens for this application.
      */
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
-
-    /**
-     * Global instance of the scopes required by this quickstart.
-     * If modifying these scopes, delete your previously saved tokens/ folder.
-     */
-    private static final List<String> SCOPES =
-        Collections.singletonList(CalendarScopes.CALENDAR);
 
     private static final String CREDENTIALS_FILE_PATH = "src/main/resources/credentials.json";
 
@@ -57,7 +50,7 @@ public class CalendarQuickstart {
      */
     Credential getCredentials(NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
-        InputStream in = CalendarQuickstart.class.getClassLoader().getResourceAsStream("credentials.json");
+        InputStream in = GetCalendarCreds.class.getClassLoader().getResourceAsStream("creds2.json");
         if (in == null) {
             throw new FileNotFoundException("Resource not found: credentials.json");
         }

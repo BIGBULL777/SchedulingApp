@@ -30,7 +30,7 @@ import java.util.List;
 public class GoogleCalDevHandler {
 
     @Autowired
-    private CalendarQuickstart calendarQuickstart;
+    private GetCalendarCreds getCalendarCreds;
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
 
@@ -44,7 +44,7 @@ public class GoogleCalDevHandler {
             log.info(maxResults+" appName "+appName);
             DateTime now = new DateTime(System.currentTimeMillis());
             NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            Credential credentials = calendarQuickstart.getCredentials(HTTP_TRANSPORT);
+            Credential credentials = getCalendarCreds.getCredentials(HTTP_TRANSPORT);
             Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY,credentials)
                 .setApplicationName(appName)
                 .build();
